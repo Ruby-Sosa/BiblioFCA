@@ -1,0 +1,478 @@
+/* =====================================================
+   CONFIGURACIÓN GENERAL
+   ===================================================== */
+
+/*
+  Aplicamos box-sizing a todos los elementos para
+  que padding y border no alteren sus dimensiones.
+*/
+* {
+  box-sizing: border-box;
+}
+
+
+/* Estilo general de toda la página */
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  background: #f7f7fb;
+  color: #333;
+}
+
+
+/* Quitamos el subrayado predeterminado de los enlaces */
+a {
+  text-decoration: none;
+}
+
+
+/* =====================================================
+   LOGIN
+   ===================================================== */
+
+/* Pantalla completa del Login */
+.login-page {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #f3effa;
+}
+
+
+/* Tarjeta principal */
+.login-card {
+  width: 420px;
+  background: white;
+  padding: 40px;
+  border-radius: 16px;
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.08);
+}
+
+
+/* Nombre del sistema */
+.login-card h1 {
+  text-align: center;
+  margin-bottom: 5px;
+}
+
+
+/* Subtítulo */
+.subtitle {
+  text-align: center;
+  color: #777;
+  margin-bottom: 30px;
+}
+
+
+/* Cada grupo del formulario */
+.form-group {
+  margin-bottom: 20px;
+}
+
+
+/* Etiquetas */
+.form-group label {
+  display: block;
+  margin-bottom: 7px;
+  font-weight: bold;
+}
+
+
+/* Inputs y select */
+input,
+select {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  outline: none;
+}
+
+
+/* Cambia el borde cuando seleccionamos un input */
+input:focus,
+select:focus {
+  border-color: #8875b5;
+}
+
+
+/* Mensaje de error */
+.error {
+  color: #b84b4b;
+  background: #fff0f0;
+  padding: 10px;
+  border-radius: 7px;
+}
+
+
+/* Credenciales de demostración */
+.demo {
+  margin-top: 25px;
+  padding: 15px;
+  background: #f7f5fb;
+  border-radius: 8px;
+  font-size: 13px;
+}
+
+
+/* =====================================================
+   PANEL
+   ===================================================== */
+
+/* Divide la pantalla entre sidebar y contenido */
+.panel {
+  display: flex;
+  min-height: 100vh;
+}
+
+
+/* Barra lateral */
+.sidebar {
+  width: 250px;
+  background: #eee9f7;
+  padding: 25px 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+
+/* Logo */
+.logo {
+  margin-bottom: 35px;
+}
+
+
+/* Nombre BiblioFCA */
+.logo h2 {
+  margin: 0;
+}
+
+
+/* Texto debajo del logo */
+.logo p {
+  margin-top: 5px;
+  color: #777;
+}
+
+
+/* Menú */
+.sidebar nav {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+
+/* Enlaces del menú */
+.sidebar nav a {
+  color: #444;
+  padding: 12px 15px;
+  border-radius: 8px;
+}
+
+
+/* Cuando pasamos el mouse */
+.sidebar nav a:hover {
+  background: #ded5ef;
+}
+
+
+/* Ruta actualmente seleccionada */
+.sidebar nav a.router-link-exact-active {
+  background: #d5caea;
+  font-weight: bold;
+}
+
+
+/* Botón cerrar sesión */
+.logout {
+  margin-top: auto;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  background: #ddd2ec;
+  cursor: pointer;
+}
+
+
+/* Contenido principal */
+.contenido {
+  flex: 1;
+  padding: 0 35px 35px;
+}
+
+
+/* =====================================================
+   HEADER
+   ===================================================== */
+
+.header {
+  min-height: 80px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #eee;
+  margin-bottom: 30px;
+}
+
+
+/* Quitamos márgenes excesivos */
+.header h2,
+.header p {
+  margin: 4px 0;
+}
+
+
+/* Texto secundario */
+.header p {
+  color: #777;
+}
+
+
+/* =====================================================
+   TÍTULOS
+   ===================================================== */
+
+.page-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+
+/* Título principal */
+.page-title h1 {
+  margin-bottom: 5px;
+}
+
+
+/* Descripción */
+.page-title p {
+  color: #777;
+  margin-top: 0;
+}
+
+
+/* =====================================================
+   TARJETAS
+   ===================================================== */
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+
+/* Tarjeta */
+.card {
+  background: white;
+  padding: 25px;
+  border-radius: 12px;
+  border: 1px solid #eee;
+}
+
+
+/* Número principal */
+.card span {
+  display: block;
+  font-size: 32px;
+  font-weight: bold;
+  margin: 15px 0;
+}
+
+
+/* =====================================================
+   BOTONES
+   ===================================================== */
+
+/* Botón principal */
+.btn-primary {
+  padding: 11px 18px;
+  background: #8875b5;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+
+/* Botón secundario */
+.btn-secondary {
+  padding: 11px 18px;
+  background: #eee;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+
+/* Botón eliminar */
+.btn-danger {
+  padding: 8px 12px;
+  background: #f4dede;
+  color: #8c3d3d;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+
+/* =====================================================
+   FORMULARIOS
+   ===================================================== */
+
+/* Tarjeta del formulario */
+.form-card {
+  background: white;
+  padding: 25px;
+  border-radius: 12px;
+  margin-bottom: 25px;
+  border: 1px solid #eee;
+}
+
+
+/* Campos organizados en columnas */
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+}
+
+
+/* Botones del formulario */
+.form-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+
+/* =====================================================
+   BUSCADOR
+   ===================================================== */
+
+.search-box {
+  margin-bottom: 20px;
+}
+
+
+/* =====================================================
+   TABLAS
+   ===================================================== */
+
+/* Permite scroll horizontal en pantallas pequeñas */
+.table-container {
+  overflow-x: auto;
+  background: white;
+  border-radius: 12px;
+  border: 1px solid #eee;
+}
+
+
+/* Tabla */
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+
+/* Encabezados y celdas */
+th,
+td {
+  text-align: left;
+  padding: 15px;
+  border-bottom: 1px solid #eee;
+}
+
+
+/* Encabezados */
+th {
+  background: #f7f5fb;
+}
+
+
+/* =====================================================
+   ETIQUETAS
+   ===================================================== */
+
+.badge {
+  display: inline-block;
+  background: #eee;
+  padding: 6px 10px;
+  border-radius: 20px;
+  font-size: 13px;
+}
+
+
+/* Estado disponible */
+.badge.disponible {
+  background: #e2f2e8;
+  color: #39764c;
+}
+
+
+/* =====================================================
+   RESULTADO DE ALUMNOS
+   ===================================================== */
+
+.resultado {
+  margin-top: 20px;
+  background: white;
+  padding: 25px;
+  border-radius: 12px;
+  border: 1px solid #eee;
+}
+
+
+/* =====================================================
+   RESPONSIVE
+   ===================================================== */
+
+/*
+  Cuando la pantalla sea menor a 900px
+  reducimos las columnas.
+*/
+@media (max-width: 900px) {
+
+  .cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+}
+
+
+/*
+  Diseño para celular.
+*/
+@media (max-width: 650px) {
+
+  .panel {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+  }
+
+  .contenido {
+    padding: 20px;
+  }
+
+  .cards {
+    grid-template-columns: 1fr;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .page-title {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+
+}
