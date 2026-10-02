@@ -1,21 +1,30 @@
 <template>
 
+  <!-- ==========================================================
+       GESTIÓN DE USUARIOS
+       ========================================================== -->
+
   <section>
 
-    <!-- Encabezado de la página -->
+
+    <!-- ENCABEZADO -->
     <div class="page-title">
 
       <div>
 
-        <h1>Gestión de usuarios</h1>
+        <h1>
+          Gestión de usuarios
+        </h1>
 
         <p>
-          Administra los usuarios internos y externos.
+          Administra los usuarios internos y externos
+          de BiblioFCA.
         </p>
 
       </div>
 
-      <!-- Botón para mostrar el formulario -->
+
+      <!-- Mostrar formulario -->
       <button
         class="btn-primary"
         @click="mostrarFormulario = true"
@@ -25,48 +34,74 @@
 
     </div>
 
-    <!-- Formulario para agregar usuarios -->
+
+    <!-- ========================================================
+         FORMULARIO
+         ======================================================== -->
+
     <div
       v-if="mostrarFormulario"
       class="form-card"
     >
 
-      <h3>Nuevo usuario</h3>
+      <h3>
+        Nuevo usuario
+      </h3>
+
 
       <div class="form-grid">
+
 
         <!-- Nombre -->
         <input
           v-model="nuevoUsuario.nombre"
+          type="text"
           placeholder="Nombre completo"
         />
+
 
         <!-- Correo -->
         <input
           v-model="nuevoUsuario.correo"
+          type="email"
           placeholder="Correo electrónico"
         />
 
-        <!-- Tipo de usuario -->
-        <select v-model="nuevoUsuario.tipo">
+
+        <!-- Contraseña -->
+        <input
+          v-model="nuevoUsuario.password"
+          type="password"
+          placeholder="Contraseña"
+        />
+
+
+        <!-- Rol -->
+        <select
+          v-model="nuevoUsuario.tipo"
+        >
 
           <option value="">
             Selecciona un tipo
           </option>
 
-          <option>
+          <option value="Administrador">
             Administrador
           </option>
 
-          <option>
+          <option value="Bibliotecario">
             Bibliotecario
           </option>
 
-          <option>
+          <option value="Maestro">
+            Maestro
+          </option>
+
+          <option value="Alumno">
             Alumno
           </option>
 
-          <option>
+          <option value="Externo">
             Externo
           </option>
 
@@ -74,7 +109,8 @@
 
       </div>
 
-      <!-- Botones -->
+
+      <!-- BOTONES -->
       <div class="form-actions">
 
         <button
@@ -84,9 +120,10 @@
           Guardar
         </button>
 
+
         <button
           class="btn-secondary"
-          @click="mostrarFormulario = false"
+          @click="cancelarFormulario"
         >
           Cancelar
         </button>
@@ -95,7 +132,11 @@
 
     </div>
 
-    <!-- Tabla de usuarios -->
+
+    <!-- ========================================================
+         TABLA
+         ======================================================== -->
+
     <div class="table-container">
 
       <table>
@@ -110,7 +151,7 @@
 
             <th>Correo</th>
 
-            <th>Tipo</th>
+            <th>Rol</th>
 
             <th>Acciones</th>
 
@@ -118,12 +159,9 @@
 
         </thead>
 
+
         <tbody>
 
-          <!--
-            Recorremos el arreglo usuarios
-            para crear una fila por usuario.
-          -->
           <tr
             v-for="usuario in usuarios"
             :key="usuario.id"
@@ -151,7 +189,6 @@
 
             <td>
 
-              <!-- Botón para eliminar -->
               <button
                 class="btn-danger"
                 @click="eliminarUsuario(usuario.id)"
@@ -173,21 +210,34 @@
 
 </template>
 
+
 <script setup lang="ts">
 
-// Importamos ref.
+// ==========================================================
+// IMPORTACIONES
+// ==========================================================
+
 import { ref } from 'vue'
 
-// Controla si mostramos o no el formulario.
+
+// ==========================================================
+// MOSTRAR / OCULTAR FORMULARIO
+// ==========================================================
+
 const mostrarFormulario = ref(false)
 
-// Lista inicial de usuarios.
+
+// ==========================================================
+// USUARIOS
+// ==========================================================
+
 const usuarios = ref([
 
   {
     id: 1,
     nombre: 'Administrador',
     correo: 'admin@biblioteca.com',
+    password: 'Admin123',
     tipo: 'Administrador'
   },
 
@@ -195,6 +245,7 @@ const usuarios = ref([
     id: 2,
     nombre: 'Ruby Sosa',
     correo: 'ruby@alumnos.uady.mx',
+    password: 'Ruby2026',
     tipo: 'Alumno'
   },
 
@@ -202,76 +253,185 @@ const usuarios = ref([
     id: 3,
     nombre: 'Gabriela Cuellar',
     correo: 'gabriela@alumnos.uady.mx',
+    password: 'Gaby2026',
     tipo: 'Alumno'
+  },
+
+  {
+    id: 4,
+    nombre: 'Bibliotecario',
+    correo: 'biblioteca@fca.uady.mx',
+    password: 'Biblio789',
+    tipo: 'Bibliotecario'
+  },
+
+  {
+    id: 5,
+    nombre: 'Maestro FCA',
+    correo: 'maestro@fca.uady.mx',
+    password: 'Maestro2026',
+    tipo: 'Maestro'
+  },
+
+  {
+    id: 6,
+    nombre: 'Usuario Externo',
+    correo: 'externo@biblioteca.com',
+    password: 'Externo2026',
+    tipo: 'Externo'
   }
 
 ])
 
-// Datos del nuevo usuario.
+
+// ==========================================================
+// NUEVO USUARIO
+// ==========================================================
+
 const nuevoUsuario = ref({
 
   nombre: '',
+
   correo: '',
+
+  password: '',
+
   tipo: ''
 
 })
 
-// Función para agregar un usuario.
+
+// ==========================================================
+// AGREGAR USUARIO
+// ==========================================================
+
 const agregarUsuario = () => {
 
-  // Validamos que todos los campos estén llenos.
+  // Comprobamos que todos los campos estén llenos.
   if (
     !nuevoUsuario.value.nombre ||
     !nuevoUsuario.value.correo ||
+    !nuevoUsuario.value.password ||
     !nuevoUsuario.value.tipo
   ) {
 
-    alert('Completa todos los campos.')
+    alert(
+      'Por favor completa todos los campos.'
+    )
 
     return
   }
 
-  // Agregamos el nuevo usuario al arreglo.
+
+  // Comprobamos que el correo no esté repetido.
+  const correoExiste =
+    usuarios.value.some(
+
+      usuario =>
+
+        usuario.correo.toLowerCase() ===
+        nuevoUsuario.value.correo
+          .trim()
+          .toLowerCase()
+
+    )
+
+
+  if (correoExiste) {
+
+    alert(
+      'Ya existe un usuario registrado con ese correo.'
+    )
+
+    return
+  }
+
+
+  // Agregamos el nuevo usuario.
   usuarios.value.push({
 
-    // Generamos un ID sencillo.
+    // ID temporal.
     id: Date.now(),
 
-    nombre: nuevoUsuario.value.nombre,
+    nombre:
+      nuevoUsuario.value.nombre,
 
-    correo: nuevoUsuario.value.correo,
+    correo:
+      nuevoUsuario.value.correo,
 
-    tipo: nuevoUsuario.value.tipo
+    password:
+      nuevoUsuario.value.password,
+
+    tipo:
+      nuevoUsuario.value.tipo
 
   })
 
-  // Limpiamos el formulario.
+
+  // Limpiamos formulario.
+  limpiarFormulario()
+
+}
+
+
+// ==========================================================
+// CANCELAR
+// ==========================================================
+
+const cancelarFormulario = () => {
+
+  limpiarFormulario()
+
+}
+
+
+// ==========================================================
+// LIMPIAR FORMULARIO
+// ==========================================================
+
+const limpiarFormulario = () => {
+
   nuevoUsuario.value = {
+
     nombre: '',
+
     correo: '',
+
+    password: '',
+
     tipo: ''
+
   }
 
-  // Cerramos el formulario.
   mostrarFormulario.value = false
 
 }
 
-// Función para eliminar un usuario.
+
+// ==========================================================
+// ELIMINAR USUARIO
+// ==========================================================
+
 const eliminarUsuario = (id: number) => {
 
-  // Confirmamos antes de eliminar.
   const confirmar =
-    confirm('¿Deseas eliminar este usuario?')
+    confirm(
+      '¿Deseas eliminar este usuario?'
+    )
+
 
   if (!confirmar) {
+
     return
   }
 
-  // Buscamos el usuario y lo eliminamos.
+
   usuarios.value =
     usuarios.value.filter(
-      usuario => usuario.id !== id
+
+      usuario =>
+        usuario.id !== id
+
     )
 
 }

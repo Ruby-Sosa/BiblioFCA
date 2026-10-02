@@ -1,21 +1,41 @@
-// Importamos createApp para crear nuestra aplicación Vue.
+// ==========================================================
+// IMPORTACIONES
+// ==========================================================
+
+// Importamos la función para crear nuestra aplicación Vue.
 import { createApp } from 'vue'
 
 // Importamos el componente principal.
 import App from './App.vue'
 
-// Importamos nuestro archivo de rutas.
+// Importamos nuestro router.
 import router from './router'
 
-// Importamos los estilos generales del sistema.
+// IMPORTANTE:
+// Aquí cargamos todos los estilos generales de BiblioFCA.
 import './style.css'
+
+
+// ==========================================================
+// CREAR APLICACIÓN
+// ==========================================================
 
 // Creamos la aplicación.
 const app = createApp(App)
 
-// Indicamos que nuestra aplicación utilizará Vue Router.
+
+// ==========================================================
+// ACTIVAR ROUTER
+// ==========================================================
+
+// Permitimos que la aplicación utilice Vue Router.
 app.use(router)
 
-// Montamos la aplicación en el elemento con id "app"
-// que se encuentra dentro de index.html.
+
+// ==========================================================
+// MONTAR APLICACIÓN
+// ==========================================================
+
+// Mostramos la aplicación dentro del elemento #app
+// que se encuentra en index.html.
 app.mount('#app')

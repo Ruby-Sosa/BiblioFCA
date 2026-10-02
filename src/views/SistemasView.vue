@@ -1,22 +1,37 @@
 <template>
 
+  <!-- ==========================================================
+       ACERVO BIBLIOTECARIO
+       ========================================================== -->
+
   <section>
 
-    <!-- Encabezado -->
+
+    <!-- ========================================================
+         ENCABEZADO
+         ======================================================== -->
+
     <div class="page-title">
 
       <div>
 
-        <h1>Acervo bibliotecario</h1>
+        <h1>
+          Acervo bibliotecario
+        </h1>
 
         <p>
-          Consulta y administra los libros de la biblioteca.
+          Consulta los materiales disponibles en BiblioFCA.
         </p>
 
       </div>
 
-      <!-- Botón agregar -->
+
+      <!--
+        Únicamente Administrador y Bibliotecario
+        pueden agregar libros.
+      -->
       <button
+        v-if="puedeAdministrar"
         class="btn-primary"
         @click="mostrarFormulario = true"
       >
@@ -25,41 +40,81 @@
 
     </div>
 
-    <!-- Formulario -->
+
+    <!-- ========================================================
+         BUSCADOR
+         ======================================================== -->
+
+    <!--
+      Este buscador está disponible para TODOS.
+    -->
+    <div class="form-card">
+
+      <input
+        v-model="busqueda"
+        type="text"
+        placeholder="Buscar por título, autor, ISBN o categoría"
+      />
+
+    </div>
+
+
+    <!-- ========================================================
+         FORMULARIO PARA AGREGAR LIBROS
+         ======================================================== -->
+
+    <!--
+      Solamente puede aparecer si el usuario
+      tiene permisos administrativos.
+    -->
     <div
-      v-if="mostrarFormulario"
+      v-if="
+        mostrarFormulario &&
+        puedeAdministrar
+      "
       class="form-card"
     >
 
-      <h3>Registrar libro</h3>
+      <h3>
+        Registrar libro
+      </h3>
+
 
       <div class="form-grid">
 
         <!-- Título -->
         <input
           v-model="nuevoLibro.titulo"
+          type="text"
           placeholder="Título"
         />
+
 
         <!-- Autor -->
         <input
           v-model="nuevoLibro.autor"
+          type="text"
           placeholder="Autor"
         />
+
 
         <!-- ISBN -->
         <input
           v-model="nuevoLibro.isbn"
+          type="text"
           placeholder="ISBN"
         />
+
 
         <!-- Categoría -->
         <input
           v-model="nuevoLibro.categoria"
+          type="text"
           placeholder="Categoría"
         />
 
       </div>
+
 
       <div class="form-actions">
 
@@ -70,9 +125,10 @@
           Guardar
         </button>
 
+
         <button
           class="btn-secondary"
-          @click="mostrarFormulario = false"
+          @click="cancelar"
         >
           Cancelar
         </button>
@@ -81,17 +137,11 @@
 
     </div>
 
-    <!-- Buscador -->
-    <div class="search-box">
 
-      <input
-        v-model="busqueda"
-        placeholder="Buscar por título, autor, ISBN o categoría..."
-      />
+    <!-- ========================================================
+         TABLA
+         ======================================================== -->
 
-    </div>
-
-    <!-- Tabla -->
     <div class="table-container">
 
       <table>
@@ -99,8 +149,6 @@
         <thead>
 
           <tr>
-
-            <th>ID</th>
 
             <th>Título</th>
 
@@ -112,36 +160,49 @@
 
             <th>Disponibilidad</th>
 
-            <th>Acciones</th>
+            <!--
+              La columna Acciones solamente aparece
+              para Administrador y Bibliotecario.
+            -->
+            <th v-if="puedeAdministrar">
+              Acciones
+            </th>
 
           </tr>
 
         </thead>
 
+
         <tbody>
 
-          <!-- Mostramos únicamente los libros filtrados -->
+          <!--
+            librosFiltrados cambia automáticamente
+            según lo escrito en el buscador.
+          -->
           <tr
             v-for="libro in librosFiltrados"
             :key="libro.id"
           >
 
-            <td>{{ libro.id }}</td>
+            <td>
+              {{ libro.titulo }}
+            </td>
 
-            <td>{{ libro.titulo }}</td>
+            <td>
+              {{ libro.autor }}
+            </td>
 
-            <td>{{ libro.autor }}</td>
+            <td>
+              {{ libro.isbn }}
+            </td>
 
-            <td>{{ libro.isbn }}</td>
-
-            <td>{{ libro.categoria }}</td>
+            <td>
+              {{ libro.categoria }}
+            </td>
 
             <td>
 
-              <span
-                class="badge"
-                :class="{ disponible: libro.disponible }"
-              >
+              <span class="badge">
 
                 {{
                   libro.disponible
@@ -153,7 +214,11 @@
 
             </td>
 
-            <td>
+
+            <!--
+              Eliminar también está restringido.
+            -->
+            <td v-if="puedeAdministrar">
 
               <button
                 class="btn-danger"
@@ -176,21 +241,66 @@
 
 </template>
 
+
 <script setup lang="ts">
 
-// Importamos ref y computed.
+// ==========================================================
+// IMPORTACIONES
+// ==========================================================
+
 import {
   ref,
   computed
 } from 'vue'
 
-// Control del formulario.
+
+// ==========================================================
+// ROL
+// ==========================================================
+
+/*
+  Recuperamos el rol de quien inició sesión.
+*/
+const rol =
+  localStorage.getItem('rol') || 'Externo'
+
+
+// ==========================================================
+// PERMISOS
+// ==========================================================
+
+/*
+  Esta variable será true únicamente cuando
+  el usuario sea Administrador o Bibliotecario.
+*/
+const puedeAdministrar = computed(() => {
+
+  return (
+    rol === 'Administrador' ||
+    rol === 'Bibliotecario'
+  )
+
+})
+
+
+// ==========================================================
+// FORMULARIO
+// ==========================================================
+
 const mostrarFormulario = ref(false)
 
-// Texto del buscador.
+
+// ==========================================================
+// BUSCADOR
+// ==========================================================
+
 const busqueda = ref('')
 
-// Lista de libros.
+
+// ==========================================================
+// LIBROS
+// ==========================================================
+
 const libros = ref([
 
   {
@@ -205,16 +315,16 @@ const libros = ref([
   {
     id: 2,
     titulo: 'Fundamentos de Bases de Datos',
-    autor: 'Silberschatz',
+    autor: 'Abraham Silberschatz',
     isbn: '9788448156718',
-    categoria: 'Bases de datos',
+    categoria: 'Bases de Datos',
     disponible: true
   },
 
   {
     id: 3,
     titulo: 'Redes de Computadoras',
-    autor: 'Andrew Tanenbaum',
+    autor: 'Andrew S. Tanenbaum',
     isbn: '9786073208178',
     categoria: 'Redes',
     disponible: false
@@ -224,50 +334,98 @@ const libros = ref([
     id: 4,
     titulo: 'Ingeniería de Software',
     autor: 'Ian Sommerville',
-    isbn: '9786073227354',
+    isbn: '9786073227022',
     categoria: 'Software',
     disponible: true
   }
 
 ])
 
-// Datos del nuevo libro.
+
+// ==========================================================
+// NUEVO LIBRO
+// ==========================================================
+
 const nuevoLibro = ref({
 
   titulo: '',
+
   autor: '',
+
   isbn: '',
+
   categoria: ''
 
 })
 
-// Computed crea una lista automáticamente
-// dependiendo de lo escrito en el buscador.
+
+// ==========================================================
+// FILTRAR LIBROS
+// ==========================================================
+
 const librosFiltrados = computed(() => {
 
-  // Convertimos la búsqueda a minúsculas.
+  /*
+    Convertimos la búsqueda a minúsculas
+    para facilitar las comparaciones.
+  */
   const texto =
     busqueda.value.toLowerCase()
 
-  // Filtramos los libros.
+
+  /*
+    filter() devuelve solamente los libros
+    que coinciden con la búsqueda.
+  */
   return libros.value.filter(libro =>
 
-    libro.titulo.toLowerCase().includes(texto) ||
+    libro.titulo
+      .toLowerCase()
+      .includes(texto)
 
-    libro.autor.toLowerCase().includes(texto) ||
+    ||
 
-    libro.isbn.toLowerCase().includes(texto) ||
+    libro.autor
+      .toLowerCase()
+      .includes(texto)
 
-    libro.categoria.toLowerCase().includes(texto)
+    ||
+
+    libro.isbn
+      .toLowerCase()
+      .includes(texto)
+
+    ||
+
+    libro.categoria
+      .toLowerCase()
+      .includes(texto)
 
   )
 
 })
 
-// Agregar libro.
+
+// ==========================================================
+// AGREGAR LIBRO
+// ==========================================================
+
 const agregarLibro = () => {
 
-  // Validamos los campos.
+  /*
+    Segunda comprobación de permisos.
+
+    Aunque el botón esté oculto, también
+    verificamos el permiso dentro de la función.
+  */
+  if (!puedeAdministrar.value) {
+
+    return
+
+  }
+
+
+  // Validamos campos.
   if (
     !nuevoLibro.value.titulo ||
     !nuevoLibro.value.autor ||
@@ -275,57 +433,113 @@ const agregarLibro = () => {
     !nuevoLibro.value.categoria
   ) {
 
-    alert('Completa todos los campos.')
+    alert(
+      'Por favor completa todos los campos.'
+    )
 
     return
   }
 
-  // Insertamos el libro.
+
+  // Agregamos el libro.
   libros.value.push({
 
     id: Date.now(),
 
-    titulo: nuevoLibro.value.titulo,
+    titulo:
+      nuevoLibro.value.titulo,
 
-    autor: nuevoLibro.value.autor,
+    autor:
+      nuevoLibro.value.autor,
 
-    isbn: nuevoLibro.value.isbn,
+    isbn:
+      nuevoLibro.value.isbn,
 
-    categoria: nuevoLibro.value.categoria,
+    categoria:
+      nuevoLibro.value.categoria,
 
-    // Todo libro nuevo estará disponible.
     disponible: true
 
   })
 
-  // Limpiamos los campos.
+
+  // Limpiamos el formulario.
   nuevoLibro.value = {
 
     titulo: '',
+
     autor: '',
+
     isbn: '',
+
     categoria: ''
 
   }
 
-  // Cerramos el formulario.
+
   mostrarFormulario.value = false
 
 }
 
-// Eliminar libro.
+
+// ==========================================================
+// CANCELAR
+// ==========================================================
+
+const cancelar = () => {
+
+  nuevoLibro.value = {
+
+    titulo: '',
+
+    autor: '',
+
+    isbn: '',
+
+    categoria: ''
+
+  }
+
+  mostrarFormulario.value = false
+
+}
+
+
+// ==========================================================
+// ELIMINAR LIBRO
+// ==========================================================
+
 const eliminarLibro = (id: number) => {
 
+  /*
+    Verificamos nuevamente los permisos.
+  */
+  if (!puedeAdministrar.value) {
+
+    return
+
+  }
+
+
   const confirmar =
-    confirm('¿Deseas eliminar este libro?')
+    confirm(
+      '¿Deseas eliminar este libro?'
+    )
+
 
   if (!confirmar) {
+
     return
+
   }
+
 
   libros.value =
     libros.value.filter(
-      libro => libro.id !== id
+
+      libro =>
+        libro.id !== id
+
     )
 
 }

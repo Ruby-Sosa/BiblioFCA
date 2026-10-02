@@ -1,65 +1,197 @@
 <template>
 
-  <!-- Contenedor de la página -->
+  <!-- ==========================================================
+       PÁGINA DE INICIO
+       ========================================================== -->
+
   <section>
 
-    <!-- Título -->
+
+    <!-- ========================================================
+         BIENVENIDA
+         ======================================================== -->
+
     <div class="page-title">
 
-      <h1>Panel de administración</h1>
+      <div>
+
+        <!-- Mostramos el nombre -->
+        <h1>
+          Bienvenido, {{ nombre }}
+        </h1>
+
+        <!-- Mostramos el rol -->
+        <p>
+          Has iniciado sesión como {{ rol }}.
+        </p>
+
+      </div>
+
+    </div>
+
+
+    <!-- ========================================================
+         ADMINISTRADOR
+         ======================================================== -->
+
+    <!--
+      Estas tarjetas únicamente aparecen
+      para el Administrador.
+    -->
+    <div
+      v-if="rol === 'Administrador'"
+      class="cards-grid"
+    >
+
+      <div class="dashboard-card">
+
+        <h3>
+          Usuarios
+        </h3>
+
+        <strong>
+          6
+        </strong>
+
+        <p>
+          Usuarios registrados
+        </p>
+
+      </div>
+
+
+      <div class="dashboard-card">
+
+        <h3>
+          Acervo
+        </h3>
+
+        <strong>
+          4
+        </strong>
+
+        <p>
+          Libros registrados
+        </p>
+
+      </div>
+
+
+      <div class="dashboard-card">
+
+        <h3>
+          Disponibles
+        </h3>
+
+        <strong>
+          3
+        </strong>
+
+        <p>
+          Ejemplares disponibles
+        </p>
+
+      </div>
+
+
+      <div class="dashboard-card">
+
+        <h3>
+          Alumnos
+        </h3>
+
+        <strong>
+          2
+        </strong>
+
+        <p>
+          Alumnos registrados
+        </p>
+
+      </div>
+
+    </div>
+
+
+    <!-- ========================================================
+         BIBLIOTECARIO
+         ======================================================== -->
+
+    <div
+      v-else-if="rol === 'Bibliotecario'"
+      class="form-card"
+    >
+
+      <h3>
+        Panel del bibliotecario
+      </h3>
 
       <p>
-        Bienvenido al Sistema de Control de Biblioteca.
+        Puedes consultar el acervo bibliotecario
+        y administrar la información de los alumnos.
       </p>
 
     </div>
 
-    <!-- Tarjetas informativas -->
-    <div class="cards">
 
-      <!-- Usuarios -->
-      <div class="card">
+    <!-- ========================================================
+         ALUMNO
+         ======================================================== -->
 
-        <h3>Usuarios</h3>
+    <div
+      v-else-if="rol === 'Alumno'"
+      class="form-card"
+    >
 
-        <span>{{ totalUsuarios }}</span>
+      <h3>
+        Consulta de biblioteca
+      </h3>
 
-        <p>Usuarios registrados</p>
+      <p>
+        Puedes consultar los libros disponibles
+        dentro del acervo bibliotecario.
+      </p>
 
-      </div>
+    </div>
 
-      <!-- Libros -->
-      <div class="card">
 
-        <h3>Acervo</h3>
+    <!-- ========================================================
+         MAESTRO
+         ======================================================== -->
 
-        <span>4</span>
+    <div
+      v-else-if="rol === 'Maestro'"
+      class="form-card"
+    >
 
-        <p>Libros registrados</p>
+      <h3>
+        Consulta para docentes
+      </h3>
 
-      </div>
+      <p>
+        Puedes consultar el acervo disponible
+        de la biblioteca.
+      </p>
 
-      <!-- Disponibles -->
-      <div class="card">
+    </div>
 
-        <h3>Disponibles</h3>
 
-        <span>3</span>
+    <!-- ========================================================
+         EXTERNO
+         ======================================================== -->
 
-        <p>Libros disponibles</p>
+    <div
+      v-else
+      class="form-card"
+    >
 
-      </div>
+      <h3>
+        Consulta de biblioteca
+      </h3>
 
-      <!-- Alumnos -->
-      <div class="card">
-
-        <h3>Alumnos</h3>
-
-        <span>3</span>
-
-        <p>Alumnos registrados</p>
-
-      </div>
+      <p>
+        Puedes consultar el acervo bibliotecario disponible.
+      </p>
 
     </div>
 
@@ -67,13 +199,25 @@
 
 </template>
 
+
 <script setup lang="ts">
 
-// Importamos ref para utilizar variables reactivas.
-import { ref } from 'vue'
+// ==========================================================
+// INFORMACIÓN DEL USUARIO
+// ==========================================================
 
-// Número de usuarios que mostraremos.
-// Más adelante puede calcularse automáticamente.
-const totalUsuarios = ref(3)
+/*
+  Recuperamos el nombre guardado
+  durante el inicio de sesión.
+*/
+const nombre =
+  localStorage.getItem('nombre') || 'Usuario'
+
+
+/*
+  Recuperamos el rol.
+*/
+const rol =
+  localStorage.getItem('rol') || 'Externo'
 
 </script>

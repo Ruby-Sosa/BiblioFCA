@@ -1,24 +1,35 @@
 <template>
 
+  <!-- ==========================================================
+       ADMINISTRACIÓN DE ROLES
+       ========================================================== -->
+
   <section>
 
-    <!-- Encabezado -->
+
+    <!-- TÍTULO -->
     <div class="page-title">
 
       <div>
 
-        <h1>Roles del sistema</h1>
+        <h1>
+          Roles y permisos
+        </h1>
 
         <p>
-          Consulta los permisos correspondientes
-          a cada tipo de usuario.
+          Consulta los permisos asignados a cada
+          tipo de usuario de BiblioFCA.
         </p>
 
       </div>
 
     </div>
 
-    <!-- Tabla -->
+
+    <!-- ========================================================
+         TABLA DE ROLES
+         ======================================================== -->
+
     <div class="table-container">
 
       <table>
@@ -27,75 +38,70 @@
 
           <tr>
 
-            <th>Rol</th>
+            <th>
+              Rol
+            </th>
 
-            <th>Usuarios</th>
+            <th>
+              Inicio
+            </th>
 
-            <th>Acervo</th>
+            <th>
+              Usuarios
+            </th>
 
-            <th>Alumnos</th>
+            <th>
+              Acervo
+            </th>
 
-            <th>Administración</th>
+            <th>
+              Alumnos
+            </th>
+
+            <th>
+              Roles
+            </th>
 
           </tr>
 
         </thead>
 
+
         <tbody>
 
-          <tr>
+          <!--
+            Generamos una fila por cada rol.
+          -->
+          <tr
+            v-for="rol in roles"
+            :key="rol.nombre"
+          >
 
-            <td>Administrador</td>
+            <td>
+              <strong>
+                {{ rol.nombre }}
+              </strong>
+            </td>
 
-            <td>Administrar</td>
+            <td>
+              {{ rol.inicio }}
+            </td>
 
-            <td>Administrar</td>
+            <td>
+              {{ rol.usuarios }}
+            </td>
 
-            <td>Consultar</td>
+            <td>
+              {{ rol.acervo }}
+            </td>
 
-            <td>Completa</td>
+            <td>
+              {{ rol.alumnos }}
+            </td>
 
-          </tr>
-
-          <tr>
-
-            <td>Bibliotecario</td>
-
-            <td>Consultar</td>
-
-            <td>Administrar</td>
-
-            <td>Consultar</td>
-
-            <td>Limitada</td>
-
-          </tr>
-
-          <tr>
-
-            <td>Alumno</td>
-
-            <td>Sin acceso</td>
-
-            <td>Consultar</td>
-
-            <td>Sin acceso</td>
-
-            <td>Sin acceso</td>
-
-          </tr>
-
-          <tr>
-
-            <td>Externo</td>
-
-            <td>Sin acceso</td>
-
-            <td>Consultar</td>
-
-            <td>Sin acceso</td>
-
-            <td>Sin acceso</td>
+            <td>
+              {{ rol.roles }}
+            </td>
 
           </tr>
 
@@ -108,3 +114,65 @@
   </section>
 
 </template>
+
+
+<script setup lang="ts">
+
+// ==========================================================
+// PERMISOS POR ROL
+// ==========================================================
+
+/*
+  Esta tabla sirve para mostrar de manera visual
+  qué puede utilizar cada tipo de usuario.
+*/
+const roles = [
+
+  {
+    nombre: 'Administrador',
+    inicio: 'Sí',
+    usuarios: 'Sí',
+    acervo: 'Administrar',
+    alumnos: 'Sí',
+    roles: 'Sí'
+  },
+
+  {
+    nombre: 'Bibliotecario',
+    inicio: 'Sí',
+    usuarios: 'No',
+    acervo: 'Administrar',
+    alumnos: 'Sí',
+    roles: 'No'
+  },
+
+  {
+    nombre: 'Maestro',
+    inicio: 'Sí',
+    usuarios: 'No',
+    acervo: 'Consultar',
+    alumnos: 'No',
+    roles: 'No'
+  },
+
+  {
+    nombre: 'Alumno',
+    inicio: 'Sí',
+    usuarios: 'No',
+    acervo: 'Consultar',
+    alumnos: 'No',
+    roles: 'No'
+  },
+
+  {
+    nombre: 'Externo',
+    inicio: 'Sí',
+    usuarios: 'No',
+    acervo: 'Consultar',
+    alumnos: 'No',
+    roles: 'No'
+  }
+
+]
+
+</script>

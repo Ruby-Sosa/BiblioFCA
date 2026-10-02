@@ -1,53 +1,153 @@
 <template>
 
-  <!-- Contenedor general del panel -->
-  <div class="panel">
+  <!-- ==========================================================
+       ESTRUCTURA GENERAL DEL PANEL
+       ========================================================== -->
 
-    <!-- Barra lateral -->
+  <div class="panel-layout">
+
+
+    <!-- ========================================================
+         MENÚ LATERAL
+         ======================================================== -->
+
     <aside class="sidebar">
 
-      <!-- Nombre del sistema -->
-      <div class="logo">
 
-        <h2>BiblioFCA</h2>
+      <!-- NOMBRE DEL SISTEMA -->
+      <div class="sidebar-brand">
 
-        <p>Biblioteca FCA</p>
+        <h2>
+          BiblioFCA
+        </h2>
+
+        <p>
+          Biblioteca FCA
+        </p>
 
       </div>
 
-      <!-- Menú principal -->
-      <nav>
 
-        <!-- Página principal -->
-        <RouterLink to="/panel">
+      <!-- ======================================================
+           MENÚ
+           ====================================================== -->
+
+      <nav class="sidebar-menu">
+
+
+        <!-- ====================================================
+             INICIO
+             ==================================================== -->
+
+        <!--
+          Todos los usuarios pueden entrar a Inicio.
+        -->
+        <RouterLink
+          to="/panel"
+        >
           Inicio
         </RouterLink>
 
-        <!-- Gestión de usuarios -->
-        <RouterLink to="/panel/usuarios">
+
+        <!-- ====================================================
+             USUARIOS
+             ==================================================== -->
+
+        <!--
+          SOLO el Administrador puede administrar usuarios.
+
+          Si el rol no es Administrador,
+          Vue ni siquiera mostrará esta opción.
+        -->
+        <RouterLink
+          v-if="rol === 'Administrador'"
+          to="/panel/usuarios"
+        >
           Usuarios
         </RouterLink>
 
-        <!-- Gestión de libros -->
-        <RouterLink to="/panel/acervo">
+
+        <!-- ====================================================
+             ACERVO
+             ==================================================== -->
+
+        <!--
+          Todos pueden consultar el acervo.
+
+          Más adelante podemos hacer que únicamente
+          Administrador y Bibliotecario puedan modificarlo.
+        -->
+        <RouterLink
+          to="/panel/acervo"
+        >
           Acervo bibliotecario
         </RouterLink>
 
-        <!-- Validación de alumnos -->
-        <RouterLink to="/panel/alumnos">
+
+        <!-- ====================================================
+             ALUMNOS
+             ==================================================== -->
+
+        <!--
+          Esta opción solamente aparece para:
+
+          Administrador
+          Bibliotecario
+        -->
+        <RouterLink
+          v-if="
+            rol === 'Administrador' ||
+            rol === 'Bibliotecario'
+          "
+          to="/panel/alumnos"
+        >
           Alumnos
         </RouterLink>
 
-        <!-- Roles -->
-        <RouterLink to="/panel/roles">
+
+        <!-- ====================================================
+             ROLES
+             ==================================================== -->
+
+        <!--
+          La configuración de roles solamente
+          puede ser utilizada por el Administrador.
+        -->
+        <RouterLink
+          v-if="rol === 'Administrador'"
+          to="/panel/roles"
+        >
           Roles
         </RouterLink>
 
       </nav>
 
-      <!-- Botón para cerrar sesión -->
+
+      <!-- ======================================================
+           USUARIO ACTUAL
+           ====================================================== -->
+
+      <div class="sidebar-user">
+
+        <!-- Nombre de la persona -->
+        <strong>
+          {{ nombre }}
+        </strong>
+
+        <!-- Rol -->
+        <p>
+          {{ rol }}
+        </p>
+
+      </div>
+
+
+      <!-- ======================================================
+           CERRAR SESIÓN
+           ====================================================== -->
+
       <button
-        class="logout"
+        class="logout-button"
         @click="cerrarSesion"
       >
         Cerrar sesión
@@ -55,15 +155,24 @@
 
     </aside>
 
-    <!-- Área donde aparecerán las diferentes vistas -->
-    <main class="contenido">
 
-      <!-- Encabezado -->
-      <HeaderComponent />
+    <!-- ========================================================
+         CONTENIDO
+         ======================================================== -->
+
+    <main class="panel-content">
 
       <!--
-        Aquí Vue Router coloca automáticamente
-        UsuariosView, SistemasView, AlumnosView, etc.
+        RouterView cambia el contenido dependiendo
+        de la opción seleccionada.
+
+        Ejemplo:
+
+        /panel/usuarios
+        muestra UsuariosView.vue
+
+        /panel/acervo
+        muestra SistemasView.vue
       -->
       <RouterView />
 
@@ -73,29 +182,76 @@
 
 </template>
 
+
 <script setup lang="ts">
 
-// Importamos RouterView y RouterLink.
+// ==========================================================
+// IMPORTACIONES
+// ==========================================================
+
 import {
-  RouterView,
   RouterLink,
+  RouterView,
   useRouter
 } from 'vue-router'
 
-// Importamos nuestro encabezado.
-import HeaderComponent from '../components/HeaderComponent.vue'
 
-// Creamos acceso al router.
+// ==========================================================
+// ROUTER
+// ==========================================================
+
 const router = useRouter()
 
-// Función para cerrar sesión.
+
+// ==========================================================
+// INFORMACIÓN DEL USUARIO
+// ==========================================================
+
+/*
+  Recuperamos del navegador el nombre
+  de la persona que inició sesión.
+*/
+const nombre =
+  localStorage.getItem('nombre') || 'Usuario'
+
+
+/*
+  Recuperamos su rol.
+
+  Ejemplos:
+
+  Administrador
+  Bibliotecario
+  Maestro
+  Alumno
+  Externo
+*/
+const rol =
+  localStorage.getItem('rol') || 'Externo'
+
+
+// ==========================================================
+// CERRAR SESIÓN
+// ==========================================================
+
 const cerrarSesion = () => {
 
-  // Eliminamos los datos de sesión.
+  /*
+    Eliminamos todos los datos relacionados
+    con la sesión actual.
+  */
   localStorage.removeItem('sesion')
+
+  localStorage.removeItem('nombre')
+
+  localStorage.removeItem('correo')
+
   localStorage.removeItem('rol')
 
-  // Regresamos al Login.
+
+  /*
+    Regresamos al Login.
+  */
   router.push('/')
 
 }
