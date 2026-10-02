@@ -6,9 +6,7 @@
     <div class="page-title">
 
       <div>
-
         <h1>Validación de alumnos</h1>
-
         <p>
           Validación del estado del alumno mediante
           Control Escolar.
