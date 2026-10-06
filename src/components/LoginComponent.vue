@@ -1,38 +1,27 @@
 <template>
-
   <!-- ==========================================================
        PANTALLA GENERAL DEL LOGIN
        ========================================================== -->
   <div class="login-page">
-
     <!-- Tarjeta que contiene el formulario -->
     <div class="login-card">
-
       <!-- Nombre del sistema -->
       <h1>BiblioFCA</h1>
-
       <!-- Descripción -->
       <p class="subtitle">
         Sistema de Control de Biblioteca
       </p>
-
-
       <!-- ======================================================
            FORMULARIO
            ====================================================== -->
-
       <!--
         @submit.prevent evita que la página se recargue
         y ejecuta nuestra función iniciarSesion().
       -->
       <form @submit.prevent="iniciarSesion">
-
-
         <!-- CORREO -->
         <div class="form-group">
-
           <label>Correo electrónico</label>
-
           <!--
             v-model conecta el input con la variable correo.
           -->
@@ -41,15 +30,10 @@
             type="email"
             placeholder="Ingresa tu correo"
           />
-
         </div>
-
-
         <!-- CONTRASEÑA -->
         <div class="form-group">
-
           <label>Contraseña</label>
-
           <!--
             type="password" oculta visualmente
             los caracteres escritos.
@@ -59,24 +43,17 @@
             type="password"
             placeholder="Ingresa tu contraseña"
           />
-
         </div>
-
-
         <!-- ====================================================
              CAPTCHA
              ==================================================== -->
-
         <div
           class="form-group"
           id="captcha-container"
         >
-
           <label>
             Código de verificación (Captcha)
           </label>
-
-
           <!-- Contenedor del captcha -->
           <div
             class="captcha-box"
@@ -87,7 +64,6 @@
               margin-bottom: 8px;
             "
           >
-
             <!-- Código generado automáticamente -->
             <span
               style="
@@ -103,11 +79,8 @@
             >
               {{ textoCaptcha }}
             </span>
-
-
             <!--
               Botón para generar otro captcha.
-
               type="button" evita que se envíe
               accidentalmente el formulario.
             -->
@@ -119,12 +92,8 @@
                 cursor: pointer;
               "
             >
-              🔄
             </button>
-
           </div>
-
-
           <!-- Campo donde el usuario escribe el captcha -->
           <input
             v-model="inputCaptcha"
@@ -316,7 +285,7 @@ const generarCaptcha = () => {
   const caracteres =
     'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
 
-  // Aquí construiremos el captcha.
+  // Aquí construiremos el captcha. Variable reactiva pero no utiliza el frame
   let resultado = ''
 
 
@@ -326,9 +295,9 @@ const generarCaptcha = () => {
   */
   for (let i = 0; i < 6; i++) {
 
-    resultado += caracteres.charAt(
+    resultado += caracteres.charAt( /*mencionamos los caracteres en charAT nos dice la posición de cada una*/ 
 
-      Math.floor(
+      Math.floor(  /* solo nos da la posicion */
         Math.random() * caracteres.length
       )
 
@@ -492,5 +461,4 @@ const iniciarSesion = () => {
   }
 
 }
-
 </script>

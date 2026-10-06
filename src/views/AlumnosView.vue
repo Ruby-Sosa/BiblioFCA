@@ -23,8 +23,8 @@
 
       <!-- Matrícula -->
       <input
-        v-model="matricula"
-        placeholder="Ingresa la matrícula"
+        v-model="nombre"
+        placeholder="Ingresa el nombre del alumno"
       />
 
       <!-- Botón -->
@@ -44,11 +44,6 @@
     >
 
       <h3>Resultado de la consulta</h3>
-
-      <p>
-        <strong>Matrícula:</strong>
-        {{ resultado.matricula }}
-      </p>
 
       <p>
         <strong>Nombre:</strong>
@@ -77,39 +72,70 @@
 
 <script setup lang="ts">
 
-// Importamos ref.
 import { ref } from 'vue'
 
-// Matrícula escrita por el usuario.
-const matricula = ref('')
+// Nombre escrito por el usuario.
+const nombre = ref('')
 
 // Resultado de la consulta.
 const resultado = ref<any>(null)
 
-// Función para simular la validación.
-const validarAlumno = () => {
+// Lista de alumnos registrados.
+const alumnos = [
 
-  // Validamos que exista una matrícula.
-  if (!matricula.value) {
+  {
+    nombre: 'Ruby Sosa',
+    correo: 'ruby@alumnos.uady.mx',
+    rol: 'Alumno'
+  },
 
-    alert('Ingresa una matrícula.')
-
-    return
+  {
+    nombre: 'Gabriela Cuellar',
+    correo: 'gabriela@alumnos.uady.mx',
+    rol: 'Alumno'
   }
 
-  /*
-    En un sistema real, aquí se realizaría
-    una petición a la API de Control Escolar.
+]
 
-    Por el momento simulamos la respuesta.
-  */
-  resultado.value = {
+// Función para validar alumno.
+const validarAlumno = () => {
 
-    matricula: matricula.value,
+  if (!nombre.value) {
 
-    nombre: 'Alumno FCA',
+    alert('Ingresa el nombre del alumno.')
 
-    estado: 'Activo'
+    return
+
+  }
+
+  const alumnoEncontrado = alumnos.find(
+
+    alumno =>
+
+      alumno.nombre.toLowerCase() ===
+      nombre.value.trim().toLowerCase()
+
+  )
+
+  if (alumnoEncontrado) {
+
+    resultado.value = {
+
+      nombre: alumnoEncontrado.nombre,
+
+      correo: alumnoEncontrado.correo,
+
+      estado: 'Activo'
+
+    }
+
+  }
+
+  else {
+
+    resultado.value = null
+
+    alert('Alumno no encontrado.')
 
   }
 
